@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: esnode-0
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "es"
+  nfs:
+    path: /pkg/elasticsearch-data/esnode-0
+    server: 192.168.124.251
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: esnode-1
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "es"
+  nfs:
+    path: /pkg/elasticsearch-data/esnode-1
+    server: 192.168.124.251
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: esnode-2
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: "es"
+  nfs:
+    path: /pkg/elasticsearch-data/esnode-2
+    server: 192.168.124.251
