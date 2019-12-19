@@ -25,13 +25,13 @@ spec:
           command: ["sysctl", "-w", "vm.max_map_count=262144"]
       containers:
         - name: elasticsearch
-#          resources:
-#            requests:
-#              memory: 256Mi
-#              cpu: 1000m
-#            limits:
-#              memory: 512Mi
-#              cpu: 100m
+          resources:
+            requests:
+              memory: 1024Mi
+              cpu: 500m
+            limits:
+              memory: 2048Mi
+              cpu: 1000m
           securityContext:
             privileged: true
             runAsUser: 1000
@@ -39,7 +39,7 @@ spec:
               add:
                 - IPC_LOCK
                 - SYS_RESOURCE
-          image: harbor.yoho8.com/stack/elasticsearch-6.4.2:v1
+          image: harbor.yoho8.com/stack/elasticsearch:6.4.2
           imagePullPolicy: IfNotPresent
           env:
           - name: ES_JAVA_OPTS
@@ -56,6 +56,8 @@ spec:
             - containerPort: 9300
               name: es-transport
           volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
             - name: es-data
               mountPath: /usr/share/elasticsearch/data
             - name: elasticsearch-config
@@ -65,22 +67,20 @@ spec:
               mountPath: /usr/share/elasticsearch/plugins/analysis-ik/config/analysis/synonyms.txt
               subPath: synonyms.txt
       volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
         - name: elasticsearch-config
           configMap:
             name: es-config
         - name: synonyms
-          configMap: 
+          configMap:
             name: synonyms
       dnsConfig:
         nameservers:
         - 192.168.124.25
       imagePullSecrets:
       - name: harbor
-#        - name: es-data
-#          emptyDir: {}
-            #items:
-            #  - key: elasticsearch.yml
-            #    path: elasticsearch.yml
   volumeClaimTemplates:
     - metadata:
         name: es-data
